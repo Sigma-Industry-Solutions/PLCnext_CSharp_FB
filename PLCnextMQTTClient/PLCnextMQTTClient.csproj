@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project InitialTargets="PLCnextMain" ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D5D45CF-C6D5-4BD8-81BC-3FF8DF76AF93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PLCnextMQTTClient</RootNamespace>
+    <AssemblyName>PLCnextMQTTClient</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>eCLR3.3</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- This entry fixes the issue of build warning that System.Core reference could not be added, which is added implicitly by the build system. -->
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="ProjectItems\LibraryDescription.xml" />
+    <Content Include="Readme.txt" />
+    <Content Include="Properties\PLCnextSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MQTTClient.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="eclrlib" />
+    <Reference Include="pcoslib" />
+    <Reference Include="IecEngineering" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="$(PLCNEXT_TOOLCHAIN_INSTALLDIR)\eCLR\AddInAnalyzer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(PLCNEXT_TOOLCHAIN_INSTALLDIR)\eCLR\eCLR-Programming-Reference.chm">
+      <Link>Documentation\eCLR-Programming-Reference.chm</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Help\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>  
+  -->
+  <!--Disable fast-up-to-date-check to execute the AfterBuild-Steps again when they have been failed before-->
+  <PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Build templates for the native interfaces -->
+    <CreateNativeInterfaces>false</CreateNativeInterfaces>
+    <!-- Build the Firmware library for PLCnext Engineer (*.pcwlx) -->
+    <CreateEngineeringLibrary>true</CreateEngineeringLibrary>
+  </PropertyGroup>
+  <Target Name="PLCnextMain">
+    <Error Text="PLCnext toolchain is not available. Reinstall the Development Tools for Visual Studio!" Condition="!Exists('$(PLCNEXT_TOOLCHAIN_INSTALLDIR)\eCLR\PLCnext.targets')" />
+    <CallTarget Targets="CheckPLCnextTools" Condition="Exists('$(PLCNEXT_TOOLCHAIN_INSTALLDIR)\eCLR\PLCnext.targets')" />
+  </Target>
+  <Import Project="$(PLCNEXT_TOOLCHAIN_INSTALLDIR)\eCLR\PLCnext.targets" />
+</Project>

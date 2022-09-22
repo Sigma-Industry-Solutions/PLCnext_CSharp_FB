@@ -1,0 +1,41 @@
+""{
+    "SensorCollection": {
+        "Sensors": [
+                {
+                "sensorId": "0",
+                "samples": [
+                    {
+                    "id": "0",
+                    "timeSampled": "5:29:45:136",
+                    "data": "50,025",
+                    "transfered": " False"
+                    },
+                    {
+                    "id": "0",
+                    "timeSampled": "5:29:50:130",
+                    "data": "50,29982",
+                    "transfered": " False"
+                    }
+                ]
+                },
+                {
+                "sensorId": "1",
+                "samples": [
+                    {
+                    "id": "0",
+                    "timeSampled": "5:29:45:136",
+                    "data": "50,025",
+                    "transfered": " False"
+                    },
+                    {
+                    "id": "0",
+                    "timeSampled": "5:29:50:130",
+                    "data": "50,29982",
+                    "transfered": " False"
+                    }
+                ]
+            }
+        ]
+    }
+
+}"

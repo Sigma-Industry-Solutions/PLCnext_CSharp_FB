@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<RuntimeIdentifiers>linux-arm</RuntimeIdentifiers>
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Google.Protobuf" Version="3.19.4" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.43.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.44.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<Protobuf Include="ArpTypes.proto" />
+		<Protobuf Include="Device\Interface\IDeviceStatusService.proto" />
+		<Protobuf Include="Plc\Gds\WriteItem.proto" />
+		<Protobuf Include="Plc\Gds\ReadItem.proto" />
+		<Protobuf Include="Plc\Gds\DataAccessError.proto" />
+		<Protobuf Include="Plc\Gds\IDataAccessService.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
+	</ItemGroup>
+
+</Project>
