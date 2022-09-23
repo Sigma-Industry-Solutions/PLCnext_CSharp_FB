@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Iec61131Lib;
+using System.Runtime.InteropServices;
 using Iec61131.Engineering.Prototypes.Common;
 using Iec61131.Engineering.Prototypes.Methods;
 using Iec61131.Engineering.Prototypes.Types;
@@ -7,6 +8,31 @@ using Iec61131.Engineering.Prototypes.Variables;
 
 namespace Energizer__PLCnextFirmwareLibrary
 {
+    // Define a string data type with a maximum string length of 200 characters
+    // Size is string length + 4 byte header + 1 byte terminating zero + padding for two byte alignment
+    // Mark the declaration with a String attribute and define the length
+    [String(506)]
+    [StructLayout(LayoutKind.Explicit, Size = 512)]
+    public struct TString506
+    {
+        // Fields
+        [FieldOffset(0)]
+        public IecStringEx s;  // This member must have the name 's' because the name is evaluated by PLCnext Engineer!
+
+        // Methods
+        // Init is needed to set the maximum size and called in the initialization
+
+        public void Init()
+        {
+            s.maximumLength = 506;
+            s.Empty();
+        }
+        public void ctor()
+        {
+            Init();
+        }
+    }
+
     [FunctionBlock]
     public class fb_SensorDataTransfer
     {
@@ -18,8 +44,8 @@ namespace Energizer__PLCnextFirmwareLibrary
         public float DATA;
         [Input, DataType("DINT")]
         public int SensorID;
-        [Output]
-        public IecString80 OUT_DiagCode;
+        [InOut]
+        public TString506 OUT_DiagCode;
 
         private SensorSampleValue ssv;
         
@@ -28,7 +54,6 @@ namespace Energizer__PLCnextFirmwareLibrary
         public void __Init()
         {
             OUT_DiagCode.ctor();
-            
         }
 
         [Execution]

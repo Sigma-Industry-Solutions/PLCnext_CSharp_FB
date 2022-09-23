@@ -11,7 +11,7 @@ namespace Energizer__PLCnextFirmwareLibrary
     static class SensorCollection
     {
 
-        private static List<Sensor> sl = new List<Sensor>();
+        public static readonly List<Sensor> sl = new List<Sensor>();
         public static void AddSample(SensorSampleValue ssv)
         {
 
@@ -59,7 +59,8 @@ namespace Energizer__PLCnextFirmwareLibrary
             }
             catch (IOException ioe)
             {
-                ConsoleLogger.log(ioe.ToString());
+                
+                Logger.ConsoleLogger.log(ioe.ToString());
             }
         }
 

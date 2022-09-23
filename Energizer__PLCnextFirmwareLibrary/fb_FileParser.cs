@@ -48,7 +48,6 @@ namespace Energizer__PLCnextFirmwareLibrary
                 Name = "backgroundThread"
             };
             ErrorMessage.ctor();
-            logger.ctor();
             StaticCaller.Start();
         }
         ~FileParser()

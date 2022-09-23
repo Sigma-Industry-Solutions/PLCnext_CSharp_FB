@@ -11,12 +11,14 @@ namespace Energizer__PLCnextFirmwareLibrary
         public string timeCollected { get; set; }
         public int id { get; set; }
         public bool transferedAck { get; set; }
+        public int sampleRate { get; set; }
 
-        public SensorSampleValue(float data, string timeCollected, int id)
+        public SensorSampleValue(float data, string timeCollected, int id, int sampleRate = 1000)
         {
             this.data = data;
             this.timeCollected = timeCollected;
             this.id = id;
+            this.sampleRate = sampleRate;
             transferedAck = false;
         }
 
@@ -30,7 +32,8 @@ namespace Energizer__PLCnextFirmwareLibrary
             return obj != null &&
                     obj.data == this.data &&
                     obj.timeCollected == this.timeCollected &&
-                    obj.id == this.id;
+                    obj.id == this.id &&
+                    obj.sampleRate == this.sampleRate;
         }
 
         public override string ToString()
