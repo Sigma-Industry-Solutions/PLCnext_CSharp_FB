@@ -101,6 +101,8 @@ namespace Energizer__PLCnextFirmwareLibrary
                         {
                             ReadFromFile();
                             // read data from files
+
+                            done = true; // Initiator of this thread looks on this bit to detect the job has been done.
                         }
                         catch (Exception ex)
                         {
@@ -108,7 +110,7 @@ namespace Energizer__PLCnextFirmwareLibrary
                             ErrorMessage.s.Init(ex.ToString());
                             ErrorCode = -1;
                         }
-                        done = true; // Initiator of this thread looks on this bit to detect the job has been done.
+                        
                     }
                     else
                     {
