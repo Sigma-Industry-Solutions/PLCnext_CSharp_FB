@@ -10,7 +10,7 @@ namespace OPC_UA_ServerGateway
 public static class ConsoleLogger
 {
 
-    public static void log(string a)
+    public static void log(string a) // test
     {
         string s = DateTime.Now.ToString("MM-dd-yyyy");
         if (!File.Exists("data" + s + ".log"))
