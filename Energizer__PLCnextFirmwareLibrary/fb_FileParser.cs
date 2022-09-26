@@ -41,22 +41,40 @@ namespace Energizer__PLCnextFirmwareLibrary
             // Create the thread object, passing in the
             // serverObject.ThreadBody method using a
             // ThreadStart delegate.
+
+            /*
+            
             ThreadStart threadStarter = new ThreadStart(BackgroundServerThread.ThreadBody);
             StaticCaller = new Thread(threadStarter)
             {
                 Priority = ThreadPriority.Lowest,
                 Name = "backgroundThread"
             };
-            ErrorMessage.ctor();
             StaticCaller.Start();
+
+            */
+            ErrorMessage.ctor();
+
+
+
+
         }
         ~FileParser()
         {
-            BackgroundServerThread.TerminateBackgroundThread = true;
+            //BackgroundServerThread.TerminateBackgroundThread = true;
         }
         [Execution]
         public void __Process()
         {
+
+            done = false;
+            BackgroundServerThread.doSomething = true;
+            BackgroundServerThread.ThreadBody();
+            ErrorMessage = BackgroundServerThread.ErrorMessage;
+            ErrorCode = BackgroundServerThread.ErrorCode;
+            sensors = BackgroundServerThread.sensors;
+            done = BackgroundServerThread.done;
+            /*
             if (BackgroundHelper.IsRisingEdge(startThread, ref m_startThread))
             {
                 done = false;
@@ -75,7 +93,11 @@ namespace Energizer__PLCnextFirmwareLibrary
             }
             ErrorMessage = BackgroundServerThread.ErrorMessage;
             ErrorCode = BackgroundServerThread.ErrorCode;
+
+            */
         }
+
+
         public class BackgroundServerThread
         {
             public static bool doSomething;
@@ -87,41 +109,47 @@ namespace Energizer__PLCnextFirmwareLibrary
             public static IecString80 ErrorMessage;
             public static void ThreadBody()
             {
-                while (!done)         // run so long as initiator exists.
+                //while (!done)         // run so long as initiator exists.
+                //{
+                if (TerminateBackgroundThread == true)
                 {
-                    if (TerminateBackgroundThread == true)
-                    {
-                        break;       // terminates this thread if initiator is removed
-                    }
-                    if (doSomething)
-                    {
-                        ErrorMessage.ctor();
-                        sensors.Ip_adress.Construct();
-                        try
-                        {
-                            ReadFromFile();
-                            // read data from files
-
-                            done = true; // Initiator of this thread looks on this bit to detect the job has been done.
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Error reading a file: {0}", ex.ToString());
-                            ErrorMessage.s.Init(ex.ToString());
-                            ErrorCode = -1;
-                        }
-                        
-                    }
-                    else
-                    {
-                        // Pause for a moment to provide a delay to make
-                        // threads more apparent.
-                        Thread.Sleep(100);
-                    }
+                    //break;       // terminates this thread if initiator is removed
                 }
+                if (doSomething)
+                {
+                    ErrorMessage.ctor();
+                    sensors.Ip_adress.Construct();
+                    try
+                    {
+                        ReadFromFile();
+                        // read data from files
+
+                        done = true; // Initiator of this thread looks on this bit to detect the job has been done.
+                        ErrorCode = 0;
+                        ErrorMessage.s.Init("No error");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error reading a file: {0}", ex.ToString());
+                        ErrorMessage.s.Init(ex.ToString());
+                        ErrorCode = -1;
+                    }
+                    // done = true;
+                }
+                else
+                {
+                    // Pause for a moment to provide a delay to make
+                    // threads more apparent.
+                    // Thread.Sleep(100);
+                }
+                //}
             }
+
+
+
             static void ReadFromFile()
             {
+
                 //string a;
                 //int lengthReturned;
                 //using (FileStream fs = System.IO.File.Open(@"data.config", FileMode.Open))
@@ -192,27 +220,32 @@ namespace Energizer__PLCnextFirmwareLibrary
                     }
                 }
             }
-        }
-        public static class BackgroundHelper
-        {
-            public static bool IsRisingEdge(bool value, ref bool _value)
-            {
-                if (value && !_value)
-                {
-                    _value = value;
-                    return true;
-                }
-                return false;
+            /*
             }
-            public static bool IsFallingEdge(bool value, ref bool _value)
+            public static class BackgroundHelper
             {
-                if (!value && _value)
+                public static bool IsRisingEdge(bool value, ref bool _value)
                 {
-                    _value = value;
-                    return true;
+                    if (value && !_value)
+                    {
+                        _value = value;
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
+                public static bool IsFallingEdge(bool value, ref bool _value)
+                {
+                    if (!value && _value)
+                    {
+                        _value = value;
+                        return true;
+                    }
+                    return false;
+                }
             }
+
+            */
         }
     }
 }
+
